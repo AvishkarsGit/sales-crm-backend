@@ -15,6 +15,7 @@ const { port, client_url } = getEnvVariables();
 connectDB();
 
 const app = express();
+console.log(`client:${client_url}`);
 
 // core middleware
 app.use(

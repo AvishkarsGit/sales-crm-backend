@@ -1,16 +1,19 @@
 import getEnvVariables from "../environment/env.js";
+
+const isProd = getEnvVariables().node_env === "production";
+
 const accessTokenCookieOptions = () => ({
   httpOnly: true,
-  secure: getEnvVariables().node_env === "production",
-  sameSite: "lax",
-  maxAge: 15 * 60 * 1000, // 15 minutes
+  secure: isProd,                    // must be true for sameSite: none
+  sameSite: isProd ? "none" : "lax", // "none" for cross-site (prod), "lax" for local dev
+  maxAge: 15 * 60 * 1000,
 });
 
 const refreshTokenCookieOptions = () => ({
   httpOnly: true,
-  secure: getEnvVariables().node_env === "production",
-  sameSite: "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
 export { accessTokenCookieOptions, refreshTokenCookieOptions };
